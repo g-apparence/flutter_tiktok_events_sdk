@@ -32,13 +32,16 @@ struct InitializeHandler {
         }
 
         ttConfig.setLogLevel(logLevel)
-
-        TikTokBusiness.initializeSdk(ttConfig) { success, error in
-            if let error = error {
-                result(FlutterError(code: "INIT_FAILED", message: "TikTok SDK initialization failed: \(error.localizedDescription)", details: nil))
-            } else {
-                result("TikTok SDK initialized successfully!")
-            }
+        do {
+          TikTokBusiness.initializeSdk(ttConfig) { success, error in
+              if let error = error {
+                  result(FlutterError(code: "INIT_FAILED", message: "TikTok SDK initialization failed: \(error.localizedDescription)", details: nil))
+              } else {
+                  result("TikTok SDK initialized successfully!")
+              }
+          }
+        } catch {
+          result(FlutterError(code: "INIT_FAILED", message: "TikTok SDK initialization failed: \(error.localizedDescription)", details: nil))
         }
     }
 
